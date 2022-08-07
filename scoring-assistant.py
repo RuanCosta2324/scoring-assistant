@@ -18,11 +18,11 @@ def start_assistant():
     elif user_choice == "2":
         rate_tv()
     elif user_choice == "3":
-        print("Alright, we're rating some music!")
+        rate_music()
     elif user_choice == "4":
-        print("Alright, we're rating a book!")
+        rate_a_book()
     elif user_choice == "5":
-        print("Alright, we're rating a video game!")
+        rate_a_game()
     else:
         print("Sorry, that's not a valid option. Please try running the program again.")
 
@@ -61,7 +61,7 @@ def rate_a_movie():
             new_criterion = input("Type your additional criterion: ")
             criteria[new_criterion] = 0
         elif will_add.upper() != "N":
-            print("Sorry, we didn't catch that. We'll assume you're OK with those criteria and continue the process.")
+            print("Sorry, that's not a valid option. We'll just continue the process.")
         
         # Getting the user's rating for each individual criterion
         print("\nThese descriptions will help you assign a score:")
@@ -148,7 +148,7 @@ def rate_tv():
             new_criterion = input("Type your additional criterion: ")
             criteria[new_criterion] = 0
         elif will_add.upper() != "N":
-            print("Sorry, we didn't catch that. We'll assume you're OK with those criteria and continue the process.")
+            print("Sorry, that's not a valid option. We'll just continue the process.")
         
         # Getting the user's rating for each individual criterion
         print("\nThese descriptions will help you assign a score:")
@@ -185,5 +185,203 @@ def rate_tv():
             print("You have rated {} season {} a {} out of 10. Thanks for using the Scoring Assistant!".format(show_title_capitalized, season, score))
         elif what_to_rate == "3":
             print("You have rated {} {}x{} - {} a {} out of 10. Thanks for using the Scoring Assistant!".format(show_title_capitalized, season, episode, episode_title, score))
+
+def rate_music():
+    print("\nWould you like to rate a particular song or an album?")
+    what_to_rate = input("Type 1 for a song or 2 for an album: ")
+
+    if what_to_rate == "1":
+        artist = input("Type the artist or band: ").title()
+        subject = input("Type the title of the song: ").title()
+    elif what_to_rate == "2":
+        artist = input("Type the artist or band: ").title()
+        subject = input("Type the title of the album: ").title()
+    else:
+        print("Sorry, that's not a valid option. Please try running the program again.")
+        return
+
+    score = 0
+    
+    print("\nWould you like to give it an overall score or would you rather rate individual aspects and let us calculate the score?")
+    user_preference = input("Type 1 to give a general score or 2 to evaluate individual parts separately: ")
+
+    if user_preference == "1":
+
+        # Asking the user to rate the song or album directly
+        print("\nWhat do you rate {} by {}?".format(subject, artist))
+
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        score = float(input("Your score between 0 and 10 (with one decimal place): "))
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated {} by {} a {} out of 10. Thanks for using the Scoring Assistant!".format(subject, artist, score))
+
+    elif user_preference == "2":
+        
+        # Showing the user what the criteria are
+        print("\nThese are the criteria you'll be evaluating:")
+        criteria = {"Vocals": 0, "Lyrics": 0, "Instrumentals": 0}
+        for criterion in criteria.keys():
+            print(criterion)
+        
+        # Asking if the user wants to add something to the list
+        will_add = input("Would you like to add another criterion to the list? Type Y or N: ")
+        if will_add.upper() == "Y":
+            new_criterion = input("Type your additional criterion: ")
+            criteria[new_criterion] = 0
+        elif will_add.upper() != "N":
+            print("Sorry, that's not a valid option. We'll just continue the process.")
+        
+        # Getting the user's rating for each individual criterion
+        print("\nThese descriptions will help you assign a score:")
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        for criterion in criteria.keys():
+            user_rating = input("How do you rate the {} of {}? Type S to skip. ".format(criterion.lower(), subject))
+            if user_rating.upper() == "S":
+                criteria[criterion] = False
+            else:
+                criteria[criterion] = int(user_rating)
+        
+        # Getting the average
+        used_criteria = 0
+        for criterion in criteria.keys():
+            if criteria[criterion] != False:
+                score += criteria[criterion]
+                used_criteria += 1
+        score = score / used_criteria
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated {} by {} a {} out of 10. Thanks for using the Scoring Assistant!".format(subject, artist, score))
+
+def rate_a_book():
+    title = input("\nPlease type the title of the book: ").title()
+    author = input("Please type the author of the book: ").title()
+
+    score = 0
+    
+    print("\nWould you like to give it an overall score or would you rather rate individual aspects and let us calculate the score?")
+    user_preference = input("Type 1 to give a general score or 2 to evaluate individual parts separately: ")
+
+    if user_preference == "1":
+
+        # Asking the user to rate the book directly
+        print("\nWhat do you rate {} by {}?".format(title, author))
+
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        score = float(input("Your score between 0 and 10 (with one decimal place): "))
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated {} by {} a {} out of 10. Thanks for using the Scoring Assistant!".format(title, author, score))
+
+    elif user_preference == "2":
+        
+        # Showing the user what the criteria are
+        print("\nThese are the criteria you'll be evaluating:")
+        criteria = {"Plot": 0, "Characters": 0, "Writing": 0}
+        for criterion in criteria.keys():
+            print(criterion)
+        
+        # Asking if the user wants to add something to the list
+        will_add = input("Would you like to add another criterion to the list? Type Y or N: ")
+        if will_add.upper() == "Y":
+            new_criterion = input("Type your additional criterion: ")
+            criteria[new_criterion] = 0
+        elif will_add.upper() != "N":
+            print("Sorry, that's not a valid option. We'll just continue the process.")
+        
+        # Getting the user's rating for each individual criterion
+        print("\nThese descriptions will help you assign a score:")
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        for criterion in criteria.keys():
+            user_rating = input("How do you rate the {} of {}? Type S to skip. ".format(criterion.lower(), title))
+            if user_rating.upper() == "S":
+                criteria[criterion] = False
+            else:
+                criteria[criterion] = int(user_rating)
+        
+        # Getting the average
+        used_criteria = 0
+        for criterion in criteria.keys():
+            if criteria[criterion] != False:
+                score += criteria[criterion]
+                used_criteria += 1
+        score = score / used_criteria
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated {} by {} a {} out of 10. Thanks for using the Scoring Assistant!".format(title, author, score))
+
+def rate_a_game():
+    title = input("\nPlease type the title of the game: ").title()
+
+    score = 0
+    
+    print("\nWould you like to give it an overall score or would you rather rate individual aspects and let us calculate the score?")
+    user_preference = input("Type 1 to give a general score or 2 to evaluate individual parts separately: ")
+
+    if user_preference == "1":
+
+        # Asking the user to rate the game directly
+        print("\nWhat do you rate the game {}?".format(title))
+
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        score = float(input("Your score between 0 and 10 (with one decimal place): "))
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated the game {} a {} out of 10. Thanks for using the Scoring Assistant!".format(title, score))
+
+    elif user_preference == "2":
+        
+        # Showing the user what the criteria are
+        print("\nThese are the criteria you'll be evaluating:")
+        criteria = {"Plot": 0, "Characters": 0, "Graphics": 0, "Gameplay": 0}
+        for criterion in criteria.keys():
+            print(criterion)
+        
+        # Asking if the user wants to add something to the list
+        will_add = input("Would you like to add another criterion to the list? Type Y or N: ")
+        if will_add.upper() == "Y":
+            new_criterion = input("Type your additional criterion: ")
+            criteria[new_criterion] = 0
+        elif will_add.upper() != "N":
+            print("Sorry, that's not a valid option. We'll just continue the process.")
+        
+        # Getting the user's rating for each individual criterion
+        print("\nThese descriptions will help you assign a score:")
+        for rating in descriptions.keys():
+            print("{}: {}".format(rating, descriptions[rating]))
+        for criterion in criteria.keys():
+            user_rating = input("How do you rate the {} of {}? Type S to skip. ".format(criterion.lower(), title))
+            if user_rating.upper() == "S":
+                criteria[criterion] = False
+            else:
+                criteria[criterion] = int(user_rating)
+        
+        # Getting the average
+        used_criteria = 0
+        for criterion in criteria.keys():
+            if criteria[criterion] != False:
+                score += criteria[criterion]
+                used_criteria += 1
+        score = score / used_criteria
+        score = round(score, 1)
+        if score == 10.0:
+            score = int(score)
+        
+        print("You have rated the game {} a {} out of 10. Thanks for using the Scoring Assistant!".format(title, score))
 
 start_assistant()
